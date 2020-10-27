@@ -97,6 +97,54 @@
                 ],
                 "TaskRoleArn": "arn:aws:iam::167172578651:role/aca-ecs-task-role"
             }
+        },
+        "acadevsvcService616C8E4D": {
+          "Type": "AWS::ECS::Service",
+          "Properties": {
+            "Cluster": {
+              "Ref": "acadevcluster493303BE"
+            },
+            "DeploymentConfiguration": {
+              "MaximumPercent": 200,
+              "MinimumHealthyPercent": 50
+            },
+            "DesiredCount": 2,
+            "EnableECSManagedTags": false,
+            "HealthCheckGracePeriodSeconds": 60,
+            "LaunchType": "FARGATE",
+            "LoadBalancers": [
+              {
+                "ContainerName": "web",
+                "ContainerPort": 80,
+                "TargetGroupArn": {
+                  "Ref": "acadevsvcLBPublicListenerECSGroup00743D95"
+                }
+              }
+            ],
+            "NetworkConfiguration": {
+              "AwsvpcConfiguration": {
+                "AssignPublicIp": "DISABLED",
+                "SecurityGroups": ["sg-0a2bf46399cae4169"],
+                "Subnets": [
+                  "subnet-0203fb629f8b4941f",
+                  "subnet-0dfcf18beb9fdbb8c"
+                ]
+              }
+            },
+            "Tags": [
+              {
+                "Key": "TeamCode",
+                "Value": "aca"
+              }
+            ],
+            "TaskDefinition": {
+              "Ref": "taskDefinition"
+            }
+          },
+          "DependsOn": [
+            "acadevsvcLBPublicListenerECSGroup00743D95",
+            "acadevsvcLBPublicListenerCAC2B3EB"
+          ]
         }
     }
 }
