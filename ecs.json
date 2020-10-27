@@ -1,0 +1,102 @@
+{
+    "Resources": {
+        "acadevcluster493303BE": {
+            "Type": "AWS::ECS::Cluster",
+            "Properties": {
+                "Tags": [{"Key": "TeamCode", "Value": "aca"}]
+            }
+          },
+          "acadevsvcLB2D42FE6A": {
+            "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+            "Properties": {
+              "LoadBalancerAttributes": [
+                {
+                  "Key": "deletion_protection.enabled",
+                  "Value": "false"
+                }
+              ],
+              "Scheme": "internal",
+              "Subnets": [
+                "subnet-0203fb629f8b4941f",
+                "subnet-0dfcf18beb9fdbb8c"
+              ],
+              "Type": "application",
+              "Tags": [{"Key": "TeamCode", "Value": "aca"}, {"Key": "Name", "Value": "aca-dev-web-alb"}]
+            }
+          },
+          "acadevsvcLBPublicListenerCAC2B3EB": {
+            "Type": "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties": {
+              "DefaultActions": [
+                {
+                  "TargetGroupArn": {
+                    "Ref": "acadevsvcLBPublicListenerECSGroup00743D95"
+                  },
+                  "Type": "forward"
+                }
+              ],
+              "LoadBalancerArn": {
+                "Ref": "acadevsvcLB2D42FE6A"
+              },
+              "Port": 80,
+              "Protocol": "HTTP"
+            }
+          },
+          "acadevsvcLBPublicListenerECSGroup00743D95": {
+            "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+            "Properties": {
+              "Port": 80,
+              "Protocol": "HTTP",
+              "TargetType": "ip",
+              "VpcId": "vpc-0828450a799156d44",
+              "Tags": [{"Key": "TeamCode", "Value": "aca"}, {"Key": "Name", "Value": "aca-dev-web-tg"}]
+            }
+          },
+        "acadevsvcTaskDefwebLogGroup3B6085F0": {
+            "Type": "AWS::Logs::LogGroup",
+            "UpdateReplacePolicy": "Retain",
+            "DeletionPolicy": "Retain",
+            "Metadata": {
+              "aws:cdk:path": "aca-ec2/aca-dev-svc/TaskDef/web/LogGroup/Resource"
+            }
+          },
+        "taskDefinition": {
+            "Type": "AWS::ECS::TaskDefinition",
+            "Properties": {
+                "ContainerDefinitions": [
+                    {
+                        "Essential": true,
+                        "Image": "amazon/amazon-ecs-sample",
+                        "LogConfiguration": {
+                        "LogDriver": "awslogs",
+                        "Options": {
+                            "awslogs-group": {
+                            "Ref": "acadevsvcTaskDefwebLogGroup3B6085F0"
+                            },
+                            "awslogs-stream-prefix": "aca-dev-taskdef",
+                            "awslogs-region": "eu-west-1"
+                        }
+                        },
+                        "Name": "web",
+                        "PortMappings": [
+                            {
+                                "ContainerPort": 80,
+                                "Protocol": "HTTP"
+                            }
+                        ]
+                    }
+                ],
+                "Tags": [{"Key": "TeamCode", "Value": "aca"}],
+                "Cpu": "256",
+                "ExecutionRoleArn": "arn:aws:iam::167172578651:role/aca-ecs-task-role",
+                "Family": "acainfraacadevsvcTaskDefFD4D500C",
+                "Memory": "512",
+                "NetworkMode": "awsvpc",
+                "RequiresCompatibilities": [
+                "FARGATE"
+                ],
+                "TaskRoleArn": "arn:aws:iam::167172578651:role/aca-ecs-task-role"
+            }
+        }
+    }
+}
