@@ -27,6 +27,9 @@
           "acadevsvcLBPublicListenerCAC2B3EB": {
             "Type": "AWS::ElasticLoadBalancingV2::Listener",
             "Properties": {
+              "Certificates": [{
+                "CertificateArn": "arn:aws:acm:eu-west-1:167172578651:certificate/07992933-4f6b-4cd0-b0d7-fa20b2a33974"
+              }],
               "DefaultActions": [
                 {
                   "TargetGroupArn": {
@@ -38,8 +41,8 @@
               "LoadBalancerArn": {
                 "Ref": "acadevsvcLB2D42FE6A"
               },
-              "Port": 80,
-              "Protocol": "HTTP"
+              "Port": 443,
+              "Protocol": "HTTPS"
             }
           },
           "acadevsvcLBPublicListenerECSGroup00743D95": {
@@ -66,7 +69,7 @@
                 "ContainerDefinitions": [
                     {
                         "Essential": true,
-                        "Image": "amazon/amazon-ecs-sample",
+                        "Image": "167172578651.dkr.ecr.eu-west-1.amazonaws.com/aca-web:0.2.8",
                         "LogConfiguration": {
                         "LogDriver": "awslogs",
                         "Options": {
@@ -87,10 +90,10 @@
                     }
                 ],
                 "Tags": [{"Key": "TeamCode", "Value": "aca"}],
-                "Cpu": "256",
+                "Cpu": "1024",
                 "ExecutionRoleArn": "arn:aws:iam::167172578651:role/aca-ecs-task-role",
                 "Family": "acainfraacadevsvcTaskDefFD4D500C",
-                "Memory": "512",
+                "Memory": "2048",
                 "NetworkMode": "awsvpc",
                 "RequiresCompatibilities": [
                 "FARGATE"
@@ -123,8 +126,8 @@
             ],
             "NetworkConfiguration": {
               "AwsvpcConfiguration": {
-                "AssignPublicIp": "DISABLED",
-                "SecurityGroups": ["sg-0a2bf46399cae4169"],
+                "AssignPublicIp": "ENABLED",
+                "SecurityGroups": ["sg-0da2823745bea25ff"],
                 "Subnets": [
                   "subnet-0203fb629f8b4941f",
                   "subnet-0dfcf18beb9fdbb8c"
