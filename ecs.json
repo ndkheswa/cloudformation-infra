@@ -24,6 +24,23 @@
               "Tags": [{"Key": "TeamCode", "Value": "aca"}, {"Key": "Name", "Value": "aca-dev-web-alb"}]
             }
           },
+          "acaProdDNS" : {
+            "Type" : "AWS::Route53::RecordSetGroup",
+            "Properties" : {
+              "HostedZoneName" : "ftacatoolprod.aws.dsarena.com.",
+              "Comment" : "Zone apex alias targeted to acadevsvcLB2D42FE6A LoadBalancer.",
+              "RecordSets" : [
+                {
+                  "Name" : "aca-testing.",
+                  "Type" : "A",
+                  "AliasTarget" : {
+                      "HostedZoneId" : { "Fn::GetAtt" : ["acadevsvcLB2D42FE6A", "CanonicalHostedZoneID"] },
+                      "DNSName" : { "Fn::GetAtt" : ["acadevsvcLB2D42FE6A","DNSName"] }
+                  }
+                }
+              ]
+            }
+          },
           "acadevsvcLBPublicListenerCAC2B3EB": {
             "Type": "AWS::ElasticLoadBalancingV2::Listener",
             "Properties": {
