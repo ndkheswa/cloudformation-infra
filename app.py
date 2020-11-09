@@ -6,6 +6,6 @@ from aca_infra.aca_infra_stack import AcaInfraStack
 
 
 app = core.App()
-AcaInfraStack(app, "aca-infra")
+AcaInfraStack(app, "aca-ec2", env={'region': 'eu-west-1', 'account': '167172578651'})
 
 app.synth()
