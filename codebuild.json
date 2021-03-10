@@ -1,0 +1,31 @@
+{
+    "Resources": {
+        "Project": {
+          "Type": "AWS::CodeBuild::Project",
+          "Properties": {
+            "Name": "frontdoor-aca",
+            "Description": "A description about my project",
+            "ServiceRole": "arn:aws:iam::724602492908:role/frontdoor-codebuild-demo-role",
+            "Artifacts": {
+              "Type": "no_artifacts"
+            },
+            "Environment": {
+              "Type": "LINUX_CONTAINER",
+              "ComputeType": "BUILD_GENERAL1_SMALL",
+              "Image": "aws/codebuild/java:openjdk-8"
+            },
+            "Source": {
+              "Location": "https://github.com/absa-group/aca-frontend",
+              "Type": "GITHUB"
+            },
+            "TimeoutInMinutes": 5,
+            "Tags": [
+              {
+                "Key": "TeamCode",
+                "Value": "frontdoor"
+              }
+            ]
+          }
+        }
+    }
+}
